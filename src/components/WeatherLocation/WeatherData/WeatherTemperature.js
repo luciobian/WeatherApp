@@ -8,7 +8,7 @@ import {
     RAIN,
     SNOW,
     WINDY,
-} from './../contansts/weathers';
+} from './../../../contansts/weathers';
 
 const icons = {
     [CLOUD]: 'day-cloud',
