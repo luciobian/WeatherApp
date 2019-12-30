@@ -1,20 +1,14 @@
 import React, { Component } from 'react';
-import convert from 'convert-units';
 import Location from './Location';
 import WeatherData from './WeatherData';
 import './style.css';
-import { SUN, } from '../../constants/weathers';
+import transformWeather from './../../services/transformWeather';
 import {
     BASE_URL,
     API_KEY
 } from '../../constants/url'
 
-const data = {
-    temperature: 25,
-    weatherState: SUN,
-    humidity: 80,
-    wind: "10 m/s"
-}
+
 
 const location = "Buenos Aires,ar";
 const end_point = `${BASE_URL}q=${location}&appid=${API_KEY}`;
@@ -26,40 +20,20 @@ class WeatherLocation extends Component {
         super();
         this.state = {
             city: "Buenos Aires",
-            data: data,
+            data: null,
         };
     }
 
-    getTemp = kelvin =>{
-        return Number(convert(kelvin).from("K").to("C").toFixed(2));
+    componentDidMount() {
+        this.handleClickUpdate();
     }
-
-    getWeatherData = weather_data => {
-        return SUN;
-    }
-
-    getData = weather_data => {
-        const { humidity, temp } = weather_data.main;
-        const { speed } = weather_data.wind;
-        const  weatherState  = this.getWeatherData(weather_data);
-        const temperature = this.getTemp(temp);
-        const data = {
-            humidity,
-            temperature,
-            weatherState,
-            wind: `${ speed } m/s`,
-        }
-
-        return data;
-    }
-
+    
 
     handleClickUpdate = () => {
-        console.log("Actualizado");
         fetch(end_point).then (resolve =>{
             return resolve.json();
         }).then ( data => {
-            const newWeather = this.getData(data);
+            const newWeather = transformWeather(data);
             console.log(newWeather);
             this.setState({
                 data: newWeather,
@@ -71,8 +45,7 @@ class WeatherLocation extends Component {
         const { city, data } = this.state;
         return <div className="weatherLocationContainer">
             <Location city={city}></Location>
-            <WeatherData data={data}></WeatherData>
-            <button onClick={this.handleClickUpdate}> Actualizar </button>
+            { data ? <WeatherData data={data}></WeatherData> : "Cargando..."}
         </div>
     }
 };
