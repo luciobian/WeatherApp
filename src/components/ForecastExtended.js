@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PorpTypes from 'prop-types';
-import ForecastItem from './ForecastItem/ForecastItem';
+import ForecastItem from './ForecastItem';
 import './styles.css';
 
 const days = [
@@ -11,12 +11,19 @@ const days = [
     "Viernes",
     "Sábado",
     "Domingo"
-]
+];
+
+const data = {
+    temperature: 10,
+    humidity: 10,
+    weatherState: "SUN",
+    wind:"10 w/s",
+};
 
 class ForecastExtended extends Component {
 
     renderForecastItemDays() {
-        return days.map( day => <ForecastItem weekDay={day}></ForecastItem> );
+        return days.map( day => <ForecastItem weekDay={day} hour={10} data={data}></ForecastItem> );
     }
 
     render() {
