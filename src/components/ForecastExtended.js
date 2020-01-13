@@ -3,6 +3,7 @@ import PorpTypes from 'prop-types';
 // import ForecastItem from './ForecastItem';
 import './styles.css';
 import { API_KEY } from '../constants/url';
+import transformForecast from '../services/transformForecast';
 
 /* const days = [
     "Lunes",
@@ -10,8 +11,6 @@ import { API_KEY } from '../constants/url';
     "Miércoles",
     "Jueves",
     "Viernes",
-    "Sábado",
-    "Domingo"
 ];
 
 const data = {
@@ -34,7 +33,11 @@ class ForecastExtended extends Component {
         fetch(end_point).then(
             data => data.json()
         ).then(
-            weather_data => console.log(weather_data)
+            weather_data => {
+                const forecastData = transformForecast(weather_data);
+                console.log(forecastData);
+                this.setState({forecastData});
+            }
         )
     }
 
