@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PorpTypes from 'prop-types';
-// import ForecastItem from './ForecastItem';
+import ForecastItem from './ForecastItem';
 import './styles.css';
 import { API_KEY } from '../constants/url';
 import transformForecast from '../services/transformForecast';
@@ -42,9 +42,12 @@ class ForecastExtended extends Component {
     }
 
 
-    renderForecastItemDays() {
-        return "Render ForecastItem";
-        // return days.map( day => <ForecastItem weekDay={day} hour={10} data={data}></ForecastItem> );
+    renderForecastItemDays(forecastData) {
+        return forecastData.map( forecast => 
+        <ForecastItem key={`${forecast.weekDay}${forecast.hour}`} weekDay={forecast.weekDay} 
+                        hour={forecast.hour} 
+                        data={forecast.data}>        
+                        </ForecastItem> );
     }
 
     renderProgress() {
@@ -57,7 +60,7 @@ class ForecastExtended extends Component {
         return (
             <div>
                 <h2 className="forecaste-title">Pronóstico Extendido de {city}</h2>
-                {forecastData ? this.renderForecastItemDays()
+                {forecastData ? this.renderForecastItemDays(forecastData)
                     : this.renderProgress()}
             </div>
         );
