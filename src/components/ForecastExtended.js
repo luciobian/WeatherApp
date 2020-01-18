@@ -4,6 +4,7 @@ import ForecastItem from './ForecastItem';
 import './styles.css';
 import { API_KEY } from '../constants/url';
 import transformForecast from '../services/transformForecast';
+import CircularProgress from '@material-ui/core/CircularProgress';
 
 /* const days = [
     "Lunes",
@@ -29,7 +30,19 @@ class ForecastExtended extends Component {
     }
 
     componentDidMount() {
-        const end_point = `${this.url_forecastextended}q=${this.props.city}&appid=${API_KEY}`;
+        this.updateCity(this.props.city);
+    }
+
+    componentWillUpdate(nextProps) {
+        if(nextProps.city !== this.props.city){
+            this.setState({forecastData : null})
+            this.updateCity(nextProps.city);
+        }
+    }
+    
+
+    updateCity = city =>{
+        const end_point = `${this.url_forecastextended}q=${city}&appid=${API_KEY}`;
         fetch(end_point).then(
             data => data.json()
         ).then(
@@ -38,7 +51,7 @@ class ForecastExtended extends Component {
                 console.log(forecastData);
                 this.setState({forecastData});
             }
-        )
+        );
     }
 
 
@@ -51,7 +64,7 @@ class ForecastExtended extends Component {
     }
 
     renderProgress() {
-        return <h3>Cargando Pronóstico extendido...</h3>;
+        return <CircularProgress></CircularProgress>;
     }
 
     render() {
