@@ -8,8 +8,8 @@ import { Grid, Row, Col } from 'react-flexbox-grid';
 import LocationList from './components/WeatherLocation/LocationList';
 import './App.css';
 import ForecastExtended from './components/ForecastExtended';
+import PropTypes from 'prop-types';
 import { setCity } from './actions';
-import { store } from './store';
 
 const cities = [
   "Corrientes, ar",
@@ -25,17 +25,14 @@ class App extends Component {
 
   constructor() {
     super();
-    this.state = { city : null }
-    
-}
+    this.state = { city: null }
+
+  }
 
   onHandleSelectedLocation = city => {
     console.log(city);
-    this.setState({city: city});
+    this.setState({ city: city });
 
-    store.dispatch(setCity(city));
-
-    
   }
   render() {
 
@@ -63,7 +60,7 @@ class App extends Component {
             <Paper elevation={4}>
               <div className="details">
                 {
-                  city && <ForecastExtended city={city}></ForecastExtended>                   
+                  city && <ForecastExtended city={city}></ForecastExtended>
                 }
               </div>
             </Paper>
@@ -74,10 +71,14 @@ class App extends Component {
   };
 
 }
-const mapDispatchToPropsActions = dispatch =>({
+
+App.protoType = {
+  setCity: PropTypes.func.isRequired,
+}
+
+const mapDispatchToPropsActions = dispatch => ({
   setCity: value => dispatch(setCity(value))
-})
+});
 
-const AppConencted = connect(null, mapDispatchToPropsActions)(App);
 
-export default AppConencted;
+export default connect(null, mapDispatchToPropsActions)(App);
