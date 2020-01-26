@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
 import Paper from '@material-ui/core/Paper';
 import AppBar from '@material-ui/core/AppBar';
 import Typography from '@material-ui/core/Typography';
@@ -7,6 +8,8 @@ import { Grid, Row, Col } from 'react-flexbox-grid';
 import LocationList from './components/WeatherLocation/LocationList';
 import './App.css';
 import ForecastExtended from './components/ForecastExtended';
+import { setCity } from './actions';
+import { store } from './store';
 
 const cities = [
   "Corrientes, ar",
@@ -16,6 +19,7 @@ const cities = [
   "Madrid, es",
   "Texas, us",
 ];
+
 
 class App extends Component {
 
@@ -28,6 +32,10 @@ class App extends Component {
   onHandleSelectedLocation = city => {
     console.log(city);
     this.setState({city: city});
+
+    store.dispatch(setCity(city));
+
+    
   }
   render() {
 
@@ -66,4 +74,10 @@ class App extends Component {
   };
 
 }
-export default App;
+const mapDispatchToPropsActions = dispatch =>({
+  setCity: value => dispatch(setCity(value))
+})
+
+const AppConencted = connect(null, mapDispatchToPropsActions)(App);
+
+export default AppConencted;
